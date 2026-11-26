@@ -1,0 +1,113 @@
+/* ==========================================================================
+   ឯកសាររចនាបថសម្រាប់អេក្រង់គ្រប់ទំហំ (Responsive Design Stylesheet)
+   កែសម្រួលប្លង់សម្រាប់ Tablet និងទូរស័ព្ទដៃ (Mobile Hamburger & Stacked Cards)
+   ========================================================================== */
+
+/* សម្រាប់អេក្រង់កុំព្យូទ័រយួរដៃ និង Tablet ផ្តេក (<= 1024px) */
+@media (max-width: 1024px) {
+  .hero-card {
+    grid-template-columns: 1fr;
+  }
+
+  .solver-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .features-grid,
+  .formulas-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* សម្រាប់អេក្រង់ Tablet បញ្ឈរ និងទូរស័ព្ទដៃ (<= 768px) */
+@media (max-width: 768px) {
+  /* លាក់របារចំហៀងជាលំនាំដើម ហើយបង្ហាញពេលចុចប៊ូតុង Hamburger */
+  .sidebar {
+    transform: translateX(-100%);
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  /* ផ្ទៃស្រទាប់ងងឹតពីក្រោយម៉ឺនុយទូរស័ព្ទ */
+  .sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.55);
+    z-index: 950;
+  }
+
+  .sidebar-overlay.show {
+    display: block;
+  }
+
+  .main-wrapper {
+    margin-left: 0;
+  }
+
+  .hamburger-btn,
+  .mobile-only {
+    display: inline-flex;
+  }
+
+  .icon-btn {
+    margin-left: auto;
+    background: rgba(255, 255, 255, 0.12);
+    border: none;
+    color: #fff;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .topbar {
+    padding: 0 16px;
+  }
+
+  .current-page-title {
+    font-size: 1.02rem;
+  }
+
+  .content-area {
+    padding: 18px 14px;
+  }
+
+  .hero-card {
+    padding: 24px 20px;
+  }
+
+  .hero-content h1 {
+    font-size: 1.45rem;
+  }
+
+  .features-grid,
+  .formulas-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .inputs-row,
+  .inputs-row-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* សម្រាប់អេក្រង់ទូរស័ព្ទតូច (<= 480px) */
+@media (max-width: 480px) {
+  .control-pill span:last-child {
+    display: none;
+  }
+
+  .inputs-row,
+  .inputs-row-4 {
+    grid-template-columns: 1fr;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+}

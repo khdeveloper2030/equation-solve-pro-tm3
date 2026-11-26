@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<!-- ឯកសារ HTML មេសម្រាប់កម្មវិធី Equation Solver Pro (Main HTML Document) -->
+<html lang="km" data-theme="light">
+<head>
+  <!-- កំណត់ការអ៊ិនកូដតួអក្សរ UTF-8 ដើម្បីគាំទ្រភាសាខ្មែរ និងនិមិត្តសញ្ញាគណិតវិទ្យា -->
+  <meta charset="UTF-8" />
+  <!-- កំណត់ Viewport សម្រាប់ការបង្ហាញលើទូរស័ព្ទដៃ និងអេក្រង់គ្រប់ទំហំ (Responsive) -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Equation Solver Pro | កម្មវិធីដោះស្រាយសមីការដឺក្រេទី២ និងទី៣</title>
+
+  <!-- ភ្ជាប់ពុម្ពអក្សរ Google Fonts សម្រាប់ភាសាខ្មែរ (Noto Sans Khmer) និងអង់គ្លេស (Plus Jakarta Sans) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Khmer:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- ភ្ជាប់ឯកសាររចនាបថ CSS មេ និង CSS សម្រាប់អេក្រង់តូចធំ -->
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+</head>
+<body>
+  <!-- ផ្ទាំងស្រទាប់ងងឹតពេលបើកម៉ឺនុយលើទូរស័ព្ទដៃ (Mobile Sidebar Overlay) -->
+  <div id="sidebarOverlay" class="sidebar-overlay" aria-hidden="true"></div>
+
+  <!-- រចនាសម្ព័ន្ធមេនៃកម្មវិធី (App Layout Wrapper) -->
+  <div class="app-layout">
+    <!-- របារម៉ឺនុយចំហៀងខាងឆ្វេង (Sidebar Navigation Menu) -->
+    <aside id="sidebar" class="sidebar" aria-label="Primary Navigation">
+      <!-- ផ្នែកឡូហ្គោ និងឈ្មោះកម្មវិធី -->
+      <div class="sidebar-header">
+        <div class="brand-logo">
+          <span class="math-symbol">∑</span>
+        </div>
+        <div class="brand-text">
+          <h1>Equation Solver</h1>
+          <span class="badge-pro">PRO</span>
+        </div>
+        <!-- ប៊ូតុងបិទម៉ឺនុយលើទូរស័ព្ទ -->
+        <button id="closeSidebarBtn" class="icon-btn mobile-only" aria-label="Close Menu">✕</button>
+      </div>
+
+      <!-- បញ្ជីតំណភ្ជាប់ម៉ឺនុយទាំង ៧ ទំព័រ (7 Navigation Menu Items) -->
+      <nav class="sidebar-nav">
+        <button class="nav-item active" data-page="home">
+          <span class="nav-icon">🏠</span>
+          <span class="nav-label" data-i18n="nav_home">ទំព័រដើម</span>
+        </button>
+        <button class="nav-item" data-page="quadratic">
+          <span class="nav-icon">x²</span>
+          <span class="nav-label" data-i18n="nav_quadratic">សមីការដឺក្រេទី២</span>
+        </button>
+        <button class="nav-item" data-page="cubic">
+          <span class="nav-icon">x³</span>
+          <span class="nav-label" data-i18n="nav_cubic">សមីការដឺក្រេទី៣</span>
+        </button>
+        <button class="nav-item" data-page="formulas">
+          <span class="nav-icon">∫</span>
+          <span class="nav-label" data-i18n="nav_formulas">រូបមន្តគណិតវិទ្យា</span>
+        </button>
+        <button class="nav-item" data-page="history">
+          <span class="nav-icon">🕒</span>
+          <span class="nav-label" data-i18n="nav_history">ប្រវត្តិគណនា</span>
+          <span id="historyCountBadge" class="count-badge">0</span>
+        </button>
+        <button class="nav-item" data-page="team">
+          <span class="nav-icon">👥</span>
+          <span class="nav-label" data-i18n="nav_team">ក្រុមការងារ</span>
+        </button>
+        <button class="nav-item" data-page="about">
+          <span class="nav-icon">ℹ️</span>
+          <span class="nav-label" data-i18n="nav_about">អំពីកម្មវិធី</span>
+        </button>
+      </nav>
+
+      <!-- ផ្នែកបាតម៉ឺនុយបង្ហាញកំណែកម្មវិធី -->
+      <div class="sidebar-footer">
+        <p data-i18n="sidebar_footer">គម្រោងបទបង្ហាញវិទ្យាល័យ • v2.0</p>
+      </div>
+    </aside>
+
+    <!-- ផ្នែកមាតិកាមេខាងស្តាំ (Main Content Area) -->
+    <div class="main-wrapper">
+      <!-- របារខាងលើ (Top Header Bar) -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <!-- ប៊ូតុង Hamburger សម្រាប់បើកម៉ឺនុយលើទូរស័ព្ទដៃ -->
+          <button id="hamburgerBtn" class="hamburger-btn" aria-label="Open Navigation Menu">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+          <h2 id="pageTitle" class="current-page-title" data-i18n="nav_home">ទំព័រដើម</h2>
+        </div>
+
+        <!-- ឧបករណ៍ប្តូរភាសា (ខ្មែរ/អង់គ្លេស) និងពន្លឺ (Light/Dark Mode) -->
+        <div class="topbar-actions">
+          <button id="langToggleBtn" class="control-pill" title="Switch Language">
+            <span id="langFlag">🇰🇭</span>
+            <span id="langText">ខ្មែរ / EN</span>
+          </button>
+          <button id="themeToggleBtn" class="control-pill" title="Toggle Dark/Light Mode">
+            <span id="themeIcon">🌙</span>
+            <span id="themeText" data-i18n="theme_dark">ងងឹត</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- កន្លែងបង្ហាញទំព័រនីមួយៗ (Dynamic Page Views Container) -->
+      <main class="content-area">
+        <!-- ==================== ១. ទំព័រដើម (HOME SECTION) ==================== -->
+        <section id="page-home" class="page-section active">
+          <div class="hero-card">
+            <div class="hero-content">
+              <span class="hero-tag" data-i18n="hero_tag">ឧបករណ៍គណិតវិទ្យាឆ្លាតវៃ</span>
+              <h1 data-i18n="hero_title">ដោះស្រាយសមីការដឺក្រេទី២ និងទី៣ មួយជំហានម្តងៗ</h1>
+              <p data-i18n="hero_desc">
+                គណនាឫសពិត ឫសកុំផ្លិច ឫសឌុប និងករណីពិសេសទាំងអស់ជាមួយការបង្ហាញរូបមន្ត និងដំណោះស្រាយលម្អិតជាភាសាខ្មែរ និងអង់គ្លេស។
+              </p>
+              <div class="hero-buttons">
+                <button class="btn btn-primary" data-goto="quadratic">
+                  <span>x²</span>
+                  <span data-i18n="btn_start_quad">ដោះស្រាយសមីការដឺក្រេទី២</span>
+                </button>
+                <button class="btn btn-secondary" data-goto="cubic">
+                  <span>x³</span>
+                  <span data-i18n="btn_start_cubic">ដោះស្រាយសមីការដឺក្រេទី៣</span>
+                </button>
+              </div>
+            </div>
+            <div class="hero-media">
+              <img src="assets/images/hero-math.jpg" alt="Equation Solver Mathematical Visualization" />
+            </div>
+          </div>
+
+          <!-- កាតបង្ហាញមុខងារសំខាន់ៗ (Feature Highlights Grid) -->
+          <div class="features-grid">
+            <div class="feature-card">
+              <div class="f-icon gradient-blue">Δ</div>
+              <h3 data-i18n="feat_1_title">គ្រប់លក្ខខណ្ឌទាំងអស់</h3>
+              <p data-i18n="feat_1_desc">គាំទ្រឫសពិត ឫសកុំផ្លិច ឫសឌុប មេគុណសូន្យ សមីការដឺក្រេទី១ គ្មានចម្លើយ និងចម្លើយរាប់មិនអស់។</p>
+            </div>
+            <div class="feature-card">
+              <div class="f-icon gradient-purple">📝</div>
+              <h3 data-i18n="feat_2_title">ដំណោះស្រាយលម្អិត</h3>
+              <p data-i18n="feat_2_desc">បង្ហាញរូបមន្ត ការជំនួសលេខ ឌីសគ្រីមីណង់ (Δ) និងលទ្ធផលចុងក្រោយយ៉ាងច្បាស់លាស់។</p>
+            </div>
+            <div class="feature-card">
+              <div class="f-icon gradient-emerald">🌐</div>
+              <h3 data-i18n="feat_3_title">ភាសាខ្មែរ 🇰🇭 និងអង់គ្លេស 🇬🇧</h3>
+              <p data-i18n="feat_3_desc">ប្តូរភាសាទូទាំងកម្មវិធីភ្លាមៗ រួមទាំងការពន្យល់ជំហានដោះស្រាយសមីការផងដែរ។</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== ២. ទំព័រសមីការដឺក្រេទី២ (QUADRATIC SOLVER) ==================== -->
+        <section id="page-quadratic" class="page-section">
+          <div class="solver-grid">
+            <!-- ផ្ទាំងបញ្ចូលមេគុណសមីការដឺក្រេទី២ -->
+            <div class="card solver-input-card">
+              <div class="card-header">
+                <h3 data-i18n="quad_heading">សមីការដឺក្រេទី២ (Quadratic Equation)</h3>
+                <div class="equation-badge">ax² + bx + c = 0</div>
+              </div>
+
+              <!-- ការបង្ហាញសមីការផ្ទាល់ពេលវាយលេខ (Live Preview) -->
+              <div id="quadLivePreview" class="live-equation-box">1x² + (-5)x + 6 = 0</div>
+
+              <div class="inputs-row">
+                <div class="input-group">
+                  <label for="quadA">a (មេគុណ x²)</label>
+                  <input type="number" id="quadA" step="any" value="1" placeholder="0" />
+                </div>
+                <div class="input-group">
+                  <label for="quadB">b (មេគុណ x)</label>
+                  <input type="number" id="quadB" step="any" value="-5" placeholder="0" />
+                </div>
+                <div class="input-group">
+                  <label for="quadC">c (ចំនួនថេរ)</label>
+                  <input type="number" id="quadC" step="any" value="6" placeholder="0" />
+                </div>
+              </div>
+
+              <!-- ប៊ូតុងគណនា និងសម្អាត -->
+              <div class="action-buttons">
+                <button id="solveQuadBtn" class="btn btn-primary">
+                  <span>⚡</span>
+                  <span data-i18n="btn_calculate">គណនា</span>
+                </button>
+                <button id="clearQuadBtn" class="btn btn-outline">
+                  <span>🧹</span>
+                  <span data-i18n="btn_clear">សម្អាត</span>
+                </button>
+              </div>
+
+              <!-- ប៊ូតុងឧទាហរណ៍រហ័សគ្រប់ករណី (Preset Examples for All Conditions) -->
+              <div class="examples-box">
+                <p class="examples-title" data-i18n="examples_label">ឧទាហរណ៍សាកល្បង (Examples):</p>
+                <div class="examples-chips">
+                  <button class="chip-btn quad-example" data-a="1" data-b="-5" data-c="6" data-i18n="ex_q_real">២ ឫសពិត (Δ &gt; 0)</button>
+                  <button class="chip-btn quad-example" data-a="1" data-b="-4" data-c="4" data-i18n="ex_q_double">ឫសឌុប (Δ = 0)</button>
+                  <button class="chip-btn quad-example" data-a="1" data-b="2" data-c="5" data-i18n="ex_q_complex">ឫសកុំផ្លិច (Δ &lt; 0)</button>
+                  <button class="chip-btn quad-example" data-a="0" data-b="2" data-c="-8" data-i18n="ex_q_linear">ដឺក្រេទី១ (a = 0)</button>
+                  <button class="chip-btn quad-example" data-a="0" data-b="0" data-c="5" data-i18n="ex_q_nosol">គ្មានចម្លើយ (0 = 5)</button>
+                  <button class="chip-btn quad-example" data-a="0" data-b="0" data-c="0" data-i18n="ex_q_inf">ចម្លើយរាប់មិនអស់ (0 = 0)</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- ផ្ទាំងបង្ហាញលទ្ធផល និងជំហានដោះស្រាយ -->
+            <div class="card solver-result-card">
+              <div class="card-header">
+                <h3 data-i18n="result_heading">លទ្ធផល និងជំហានដោះស្រាយ</h3>
+                <span id="quadConditionBadge" class="status-pill">Δ &gt; 0</span>
+              </div>
+              <div id="quadResultContainer" class="result-body"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== ៣. ទំព័រសមីការដឺក្រេទី៣ (CUBIC SOLVER) ==================== -->
+        <section id="page-cubic" class="page-section">
+          <div class="solver-grid">
+            <!-- ផ្ទាំងបញ្ចូលមេគុណសមីការដឺក្រេទី៣ -->
+            <div class="card solver-input-card">
+              <div class="card-header">
+                <h3 data-i18n="cubic_heading">សមីការដឺក្រេទី៣ (Cubic Equation)</h3>
+                <div class="equation-badge">ax³ + bx² + cx + d = 0</div>
+              </div>
+
+              <div id="cubicLivePreview" class="live-equation-box">1x³ + (-6)x² + 11x + (-6) = 0</div>
+
+              <div class="inputs-row inputs-row-4">
+                <div class="input-group">
+                  <label for="cubicA">a (x³)</label>
+                  <input type="number" id="cubicA" step="any" value="1" placeholder="0" />
+                </div>
+                <div class="input-group">
+                  <label for="cubicB">b (x²)</label>
+                  <input type="number" id="cubicB" step="any" value="-6" placeholder="0" />
+                </div>
+                <div class="input-group">
+                  <label for="cubicC">c (x)</label>
+                  <input type="number" id="cubicC" step="any" value="11" placeholder="0" />
+                </div>
+                <div class="input-group">
+                  <label for="cubicD">d (ថេរ)</label>
+                  <input type="number" id="cubicD" step="any" value="-6" placeholder="0" />
+                </div>
+              </div>
+
+              <div class="action-buttons">
+                <button id="solveCubicBtn" class="btn btn-primary">
+                  <span>⚡</span>
+                  <span data-i18n="btn_calculate">គណនា</span>
+                </button>
+                <button id="clearCubicBtn" class="btn btn-outline">
+                  <span>🧹</span>
+                  <span data-i18n="btn_clear">សម្អាត</span>
+                </button>
+              </div>
+
+              <!-- ឧទាហរណ៍គ្រប់ករណីសម្រាប់សមីការដឺក្រេទី៣ -->
+              <div class="examples-box">
+                <p class="examples-title" data-i18n="examples_label">ឧទាហរណ៍សាកល្បង (Examples):</p>
+                <div class="examples-chips">
+                  <button class="chip-btn cubic-example" data-a="1" data-b="-6" data-c="11" data-d="-6" data-i18n="ex_c_3real">៣ ឫសពិតផ្សេងគ្នា</button>
+                  <button class="chip-btn cubic-example" data-a="1" data-b="-3" data-c="3" data-d="-1" data-i18n="ex_c_triple">ឫសបីជាន់ (x=1)</button>
+                  <button class="chip-btn cubic-example" data-a="1" data-b="-4" data-c="5" data-d="-2" data-i18n="ex_c_double">ឫសឌុប & ១ ឫសពិត</button>
+                  <button class="chip-btn cubic-example" data-a="1" data-b="0" data-c="0" data-d="-8" data-i18n="ex_c_complex">១ ឫសពិត & ២ កុំផ្លិច</button>
+                  <button class="chip-btn cubic-example" data-a="0" data-b="1" data-c="-5" data-d="6" data-i18n="ex_c_quad">ដឺក្រេទី២ (a = 0)</button>
+                  <button class="chip-btn cubic-example" data-a="0" data-b="0" data-c="3" data-d="-9" data-i18n="ex_c_linear">ដឺក្រេទី១ (a=b=0)</button>
+                  <button class="chip-btn cubic-example" data-a="0" data-b="0" data-c="0" data-d="7" data-i18n="ex_c_nosol">គ្មានចម្លើយ (0 = 7)</button>
+                  <button class="chip-btn cubic-example" data-a="0" data-b="0" data-c="0" data-d="0" data-i18n="ex_c_inf">ចម្លើយរាប់មិនអស់</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- ផ្ទាំងលទ្ធផលសមីការដឺក្រេទី៣ -->
+            <div class="card solver-result-card">
+              <div class="card-header">
+                <h3 data-i18n="result_heading">លទ្ធផល និងជំហានដោះស្រាយ</h3>
+                <span id="cubicConditionBadge" class="status-pill">3 Real Roots</span>
+              </div>
+              <div id="cubicResultContainer" class="result-body"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== ៤. ទំព័ររូបមន្តគណិតវិទ្យា (FORMULAS PAGE) ==================== -->
+        <section id="page-formulas" class="page-section">
+          <div class="formula-banner">
+            <img src="assets/images/formula-bg.jpg" alt="Mathematical Formulas Banner" />
+            <div class="formula-banner-overlay">
+              <h2 data-i18n="form_banner_title">សង្ខេបរូបមន្តដោះស្រាយសមីការ</h2>
+              <p data-i18n="form_banner_sub">មូលដ្ឋានគ្រឹះពីជគណិតសម្រាប់ថ្នាក់វិទ្យាល័យ</p>
+            </div>
+          </div>
+
+          <div class="formulas-grid">
+            <!-- កាតរូបមន្តសមីការដឺក្រេទី២ -->
+            <div class="card formula-card">
+              <h3 data-i18n="form_quad_title">១. សមីការដឺក្រេទី២ (ax² + bx + c = 0, a ≠ 0)</h3>
+              <div class="math-block">Δ = b² - 4ac</div>
+              <ul class="formula-list">
+                <li><strong>Δ &gt; 0 :</strong> <span data-i18n="form_q_gt0">មានឫសពិតពីរផ្សេងគ្នា៖ x₁,₂ = (-b ± √Δ) / (2a)</span></li>
+                <li><strong>Δ = 0 :</strong> <span data-i18n="form_q_eq0">មានឫសឌុបមួយ៖ x₁ = x₂ = -b / (2a)</span></li>
+                <li><strong>Δ &lt; 0 :</strong> <span data-i18n="form_q_lt0">មានឫសកុំផ្លិចឆ្លាស់គ្នាពីរ៖ x₁,₂ = (-b ± i√|Δ|) / (2a)</span></li>
+                <li><strong>Vieta :</strong> x₁ + x₂ = -b/a , x₁·x₂ = c/a</li>
+              </ul>
+            </div>
+
+            <!-- កាតរូបមន្តសមីការដឺក្រេទី៣ -->
+            <div class="card formula-card">
+              <h3 data-i18n="form_cubic_title">២. សមីការដឺក្រេទី៣ (ax³ + bx² + cx + d = 0, a ≠ 0)</h3>
+              <div class="math-block">t³ + pt + q = 0  (x = t - b/3a)</div>
+              <ul class="formula-list">
+                <li><strong>p :</strong> p = (3ac - b²) / (3a²)</li>
+                <li><strong>q :</strong> q = (2b³ - 9abc + 27a²d) / (27a³)</li>
+                <li><strong>Δ₀ :</strong> Δ₀ = (q/2)² + (p/3)³</li>
+                <li data-i18n="form_c_cases">ប្រើវិធីសាស្ត្រ Cardano នៅពេល Δ₀ ≥ 0 និងរូបមន្តត្រីកោណមាត្រនៅពេល Δ₀ &lt; 0 (៣ ឫសពិត)។</li>
+              </ul>
+            </div>
+
+            <!-- កាតករណីពិសេស -->
+            <div class="card formula-card">
+              <h3 data-i18n="form_special_title">៣. ករណីពិសេស (Degenerate Cases)</h3>
+              <div class="math-block">bx + c = 0  |  0 = c</div>
+              <ul class="formula-list">
+                <li data-i18n="form_sp_1">ប្រសិនបើ a = 0 និង b ≠ 0 ៖ សមីការក្លាយជាដឺក្រេទី១ x = -c / b។</li>
+                <li data-i18n="form_sp_2">ប្រសិនបើ a = 0, b = 0 និង c ≠ 0 ៖ សមីការគ្មានចម្លើយ (0 = c មិនពិត)។</li>
+                <li data-i18n="form_sp_3">ប្រសិនបើ a = 0, b = 0 និង c = 0 ៖ សមីការមានចម្លើយរាប់មិនអស់ (∀x ∈ ℝ)។</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== ៥. ទំព័រប្រវត្តិគណនា (HISTORY PAGE) ==================== -->
+        <section id="page-history" class="page-section">
+          <div class="card">
+            <div class="card-header history-header">
+              <div>
+                <h3 data-i18n="hist_title">ប្រវត្តិនៃការគណនាសមីការ</h3>
+                <p class="muted-text" data-i18n="hist_sub">រក្សាទុកដោយស្វ័យប្រវត្តិក្នុងកម្មវិធីរុករករបស់អ្នក</p>
+              </div>
+              <button id="clearHistoryBtn" class="btn btn-danger">
+                <span>🗑️</span>
+                <span data-i18n="btn_clear_history">លុបប្រវត្តិទាំងអស់</span>
+              </button>
+            </div>
+            <div id="historyListContainer" class="history-list"></div>
+          </div>
+        </section>
+
+        <!-- ==================== ៦. ទំព័រក្រុមការងារ (TEAM WORK PAGE) ==================== -->
+        <section id="page-team" class="page-section">
+          <div class="section-intro">
+            <h2 data-i18n="team_title">សមាជិកក្រុមអភិវឌ្ឍន៍គម្រោង</h2>
+            <p data-i18n="team_sub">ប្រធានក្រុម ១ រូប និងសមាជិក ៤ រូប សម្រាប់គម្រោងបទបង្ហាញវិទ្យាល័យ</p>
+          </div>
+          <!-- កាតសមាជិកក្រុមទាំង ៥ នាក់នឹងត្រូវបានបង្កើតតាមរយៈ js/team.js -->
+          <div id="teamGridContainer" class="team-grid"></div>
+        </section>
+
+        <!-- ==================== ៧. ទំព័រអំពីកម្មវិធី (ABOUT PAGE) ==================== -->
+        <section id="page-about" class="page-section">
+          <div class="card about-card">
+            <h2 data-i18n="about_title">អំពី Equation Solver Pro</h2>
+            <p data-i18n="about_p1">
+              Equation Solver Pro គឺជាកម្មវិធីគេហទំព័រអប់រំដែលបង្កើតឡើងដោយប្រើបច្ចេកវិទ្យា HTML5, CSS3 និង Vanilla JavaScript សុទ្ធសាធ ដើម្បីជួយសិស្សានុសិស្សវិទ្យាល័យក្នុងការសិក្សា និងផ្ទៀងផ្ទាត់ការដោះស្រាយសមីការដឺក្រេទី២ និងទី៣។
+            </p>
+            <div class="about-specs">
+              <div class="spec-item">
+                <strong data-i18n="about_tech_label">បច្ចេកវិទ្យា៖</strong>
+                <span>HTML5, CSS3, Vanilla JavaScript (ES6+)</span>
+              </div>
+              <div class="spec-item">
+                <strong data-i18n="about_accuracy_label">ភាពជាក់លាក់គណិតវិទ្យា៖</strong>
+                <span data-i18n="about_accuracy_val">គាំទ្រគ្រប់ករណី ឫសពិត ឫសកុំផ្លិច និងករណីមេគុណសូន្យ</span>
+              </div>
+              <div class="spec-item">
+                <strong data-i18n="about_offline_label">ដំណើរការ៖</strong>
+                <span data-i18n="about_offline_val">ដំណើរការ 100% លើម៉ាស៊ីនផ្ទាល់ (Offline Ready)</span>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- ភ្ជាប់ឯកសារ JavaScript តាមលំដាប់លំដោយ (Modular JavaScript Files) -->
+  <script src="js/language.js"></script>
+  <script src="js/quadratic.js"></script>
+  <script src="js/cubic.js"></script>
+  <script src="js/team.js"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>
